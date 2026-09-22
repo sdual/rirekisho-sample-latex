@@ -1,0 +1,195 @@
+% !TeX program = lualatex
+% ビルド: lualatex -interaction=nonstopmode -halt-on-error resume.tex
+\documentclass[a4paper,10pt]{ltjsarticle}
+\usepackage[margin=15mm]{geometry}
+\usepackage{luatexja-fontspec}
+\usepackage{array,tabularx,graphicx,etoolbox}
+\setmainjfont{HaranoAjiMincho-Regular}
+\setsansjfont{HaranoAjiGothic-Medium}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\tabcolsep}{2mm}
+\setlength{\arrayrulewidth}{0.4pt}
+\renewcommand{\arraystretch}{1}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ============================================================
+% 基本情報：各 {} 内を書き換えてください。空欄でも印刷できます。
+% 日付は西暦・和暦のいずれかで統一してください。
+% ============================================================
+\newcommand{\AsOfDate}{\hspace{9mm}年\hspace{6mm}月\hspace{6mm}日}
+\newcommand{\NameKana}{}
+\newcommand{\FullName}{}
+\newcommand{\BirthDate}{\hspace{9mm}年\hspace{6mm}月\hspace{6mm}日}
+\newcommand{\Age}{\hspace{5mm}}
+\newcommand{\Gender}{} % 任意記載。不要なら空欄にしてください。
+\newcommand{\PostalCode}{}
+\newcommand{\AddressKana}{}
+\newcommand{\Address}{}
+\newcommand{\Phone}{}
+\newcommand{\Email}{}
+\newcommand{\ContactPostalCode}{}
+\newcommand{\ContactAddressKana}{}
+\newcommand{\ContactAddress}{} % 現住所以外への連絡を希望する場合のみ
+\newcommand{\ContactPhone}{}
+\newcommand{\PhotoFile}{} % 例: photo.jpg（空欄なら写真貼付枠）
+\newcommand{\Motivation}{} % 志望の動機、特技、好きな学科、アピールポイントなど
+\newcommand{\CommuteTime}{約\hspace{6mm}時間\hspace{6mm}分}
+\newcommand{\Dependents}{\hspace{7mm}人} % 配偶者を除く
+\newcommand{\Spouse}{} % 有・無など
+\newcommand{\SpouseSupport}{} % 有・無など
+\newcommand{\Requests}{} % 給料・職種・勤務時間・勤務地などの希望
+
+% 行の最小高さ（長い内容は折り返されるため、全体の高さに注意）
+\newcommand{\RowHeight}[1]{\rule[-2mm]{0pt}{#1}}
+\newcommand{\Entry}[3]{\RowHeight{8mm}#1 & #2 & #3 \\ \hline}
+\newcommand{\HistoryHeader}[1]{%
+  \RowHeight{8mm}年 & 月 & \multicolumn{1}{c|}{#1} \\ \hline}
+
+% 自由記述欄：ラベルを含む内側の高さを指定
+\newcommand{\TextBox}[3]{%
+  \begingroup
+  \setlength{\fboxsep}{2mm}%
+  \fbox{\begin{minipage}[t][#1][t]{\dimexpr\linewidth-4mm-2\fboxrule\relax}
+    {\small #2}\par\vspace{2mm}
+    #3
+  \end{minipage}}%
+  \endgroup\par}
+
+\newcommand{\PhotoBox}{%
+  \begingroup
+  \setlength{\fboxsep}{0pt}%
+  \ifdefempty{\PhotoFile}{%
+    \fbox{\begin{minipage}[c][40mm][c]{30mm}
+      \centering\small 写真貼付欄\par\vspace{3mm}
+      縦40mm × 横30mm\par\vspace{2mm}
+      本人単身・胸から上\par 脱帽・正面
+    \end{minipage}}%
+  }{%
+    \fbox{\begin{minipage}[c][40mm][c]{30mm}
+      \centering
+      \includegraphics[width=30mm,height=40mm,keepaspectratio]{\PhotoFile}%
+    \end{minipage}}%
+  }%
+  \endgroup}
+
+\begin{document}
+
+% ======================== 1ページ目 ========================
+{\fontsize{23}{28}\selectfont\sffamily 履 歴 書}\hfill
+{\small \AsOfDate 現在}\par
+\vspace{5mm}
+
+\begin{minipage}[t]{133mm}
+  \vspace{0pt}
+  \begin{tabularx}{\linewidth}{|Y|}
+    \hline
+    \RowHeight{8mm}{\small ふりがな}\quad\NameKana \\ \hline
+    \RowHeight{18mm}{\small 氏名}\quad{\Large \FullName} \\ \hline
+    \RowHeight{10mm}\BirthDate 生\quad（満\Age 歳） \\ \hline
+    \RowHeight{8mm}{\small 性別（任意）}\quad\Gender \\ \hline
+  \end{tabularx}
+\end{minipage}\hfill
+\begin{minipage}[t]{42mm}
+  \vspace{0pt}\centering\PhotoBox
+\end{minipage}\par
+\vspace{3mm}
+
+\begin{tabularx}{\linewidth}{|Y|p{53mm}|}
+  \hline
+  \RowHeight{6mm}{\small ふりがな}\quad\AddressKana
+    & {\small 電話}\quad\Phone \\ \hline
+  \RowHeight{14mm}\begin{minipage}[t]{\linewidth}
+    {\small 現住所}\quad 〒\PostalCode\par\Address
+  \end{minipage}
+    & \begin{minipage}[t]{\linewidth}
+      {\small E-mail}\par{\small\ttfamily\Email}
+    \end{minipage} \\ \hline
+  \RowHeight{6mm}{\small ふりがな}\quad\ContactAddressKana
+    & {\small 電話}\quad\ContactPhone \\ \hline
+  \RowHeight{16mm}\begin{minipage}[t]{\linewidth}
+    {\small 連絡先}\quad 〒\ContactPostalCode\par
+    {\scriptsize（現住所以外への連絡を希望する場合のみ記入）}\par
+    \ContactAddress\par\vspace{2mm}
+  \end{minipage} & \\ \hline
+\end{tabularx}\par
+\vspace{4mm}
+
+\begin{tabularx}{\linewidth}{|C{17mm}|C{10mm}|Y|}
+  \hline
+  \HistoryHeader{学歴・職歴（各別にまとめて書く）}
+  % 使用例：以下の空行を必要に応じて置き換えてください。
+  % \Entry{}{}{\hfill 学歴\hfill\mbox{}}
+  % \Entry{2020}{4}{○○大学 ○○学部 ○○学科 入学}
+  % \Entry{2024}{3}{○○大学 ○○学部 ○○学科 卒業}
+  % \Entry{}{}{\hfill 職歴\hfill\mbox{}}
+  % \Entry{2024}{4}{株式会社○○ 入社}
+  % \Entry{}{}{現在に至る}
+  % \Entry{}{}{\hfill 以上}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+\end{tabularx}
+
+\newpage
+% ======================== 2ページ目 ========================
+\begin{tabularx}{\linewidth}{|C{17mm}|C{10mm}|Y|}
+  \hline
+  \HistoryHeader{学歴・職歴（つづき）}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+\end{tabularx}\par
+\vspace{4mm}
+
+\begin{tabularx}{\linewidth}{|C{17mm}|C{10mm}|Y|}
+  \hline
+  \HistoryHeader{免許・資格}
+  % 例: \Entry{2023}{8}{普通自動車第一種運転免許 取得}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+  \Entry{}{}{}
+\end{tabularx}\par
+\vspace{4mm}
+
+\TextBox{46mm}{志望の動機、特技、好きな学科、アピールポイントなど}{\Motivation}
+\vspace{4mm}
+
+\begin{tabularx}{\linewidth}{|Y|Y|}
+  \hline
+  \RowHeight{13mm}\begin{minipage}[t]{\linewidth}
+    {\small 通勤時間}\par\CommuteTime\par\vspace{2mm}
+  \end{minipage}
+    & \begin{minipage}[t]{\linewidth}
+      {\small 扶養家族数（配偶者を除く）}\par\Dependents\par\vspace{2mm}
+    \end{minipage} \\ \hline
+  \RowHeight{13mm}\begin{minipage}[t]{\linewidth}
+    {\small 配偶者}\par\Spouse
+  \end{minipage}
+    & \begin{minipage}[t]{\linewidth}
+      {\small 配偶者の扶養義務}\par\SpouseSupport
+    \end{minipage} \\ \hline
+\end{tabularx}\par
+\vspace{4mm}
+
+\TextBox{49mm}{本人希望記入欄\par
+  {\footnotesize（特に給料・職種・勤務時間・勤務地・その他についての希望などがあれば記入）}}{\Requests}
+
+\end{document}
