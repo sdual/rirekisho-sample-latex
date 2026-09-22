@@ -87,4 +87,3 @@ lualatex -interaction=nonstopmode -halt-on-error resume.tex
 ## 印刷
 
 A4用紙に **実際のサイズ（100%）** で印刷してください。A3横1枚の見開きにしたい場合は、印刷設定でA3・横向き・1枚あたり2ページ・左から右の順を選択してください。
-# rirekisho-sample-latex
